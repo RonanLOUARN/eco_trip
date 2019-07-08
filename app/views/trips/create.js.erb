@@ -1,0 +1,8 @@
+<% if @trip.errors.any? %>
+  document.getElementById('flash').innerHTML = '<%= j render 'shared/alert' %>';
+<% else %>
+  document.getElementById('flash').innerHTML = '<%= j render 'shared/notice' %>';
+  document.getElementById('trip-list').innerHTML += '<%= j render 'trip', trip: @trip %>'
+<% end %>
+
+hideFlash(3000);
