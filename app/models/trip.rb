@@ -4,6 +4,7 @@ class Trip < ApplicationRecord
 
   before_validation :set_code
   before_save :print_state
+  before_save :trigger_payment
 
   enum state: {
     created: 'created',
@@ -12,6 +13,14 @@ class Trip < ApplicationRecord
   }
 
   private
+
+  def trigger_payment
+    return unless state_changed? || !persisted?
+
+    Payment.bill if created?
+    Payment.pay if started?
+    Payment.reimburse if canceled?
+  end
 
   def print_state
     return unless state_changed?
