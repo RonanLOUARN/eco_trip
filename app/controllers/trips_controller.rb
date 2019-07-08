@@ -1,5 +1,5 @@
 class TripsController < ApplicationController
-  before_action :set_trip, only: %i(create update destroy)
+  before_action :set_trip, only: %i(update destroy)
 
   def index
     @trips = Trip.all
@@ -7,17 +7,17 @@ class TripsController < ApplicationController
 
   def create
     @trip = Trip.new
-    @trip.save
+    build_notice(@trip.state) if @trip.save
     respond_to(&:js)
   end
 
   def update
-    @trip.started!
+    build_notice(@trip.state) if @trip.started!
     respond_to(&:js)
   end
 
   def destroy
-    @trip.canceled!
+    build_notice(@trip.state) if @trip.canceled!
     respond_to(&:js)
   end
 
@@ -25,5 +25,9 @@ class TripsController < ApplicationController
 
   def set_trip
     @trip = Trip.find(params[:id])
+  end
+
+  def build_notice(state)
+    flash[:notice] = "Trip successfully #{state}"
   end
 end

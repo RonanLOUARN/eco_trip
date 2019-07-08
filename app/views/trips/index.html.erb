@@ -1,0 +1,14 @@
+<div class="jumbotron jumbotron-fluid position-relative">
+  <div class="position-absolute" id="flash"></div>
+  <div class="container">
+    <h1 class="display-4">Eco Trip</h1>
+    <p class="lead">Voyage écologique</p>
+  </div>
+</div>
+
+<div class="container">
+  <ul id="trip-list" class="list-group">
+    <%= link_to "Create a Trip", trips_path, method: :post, class: 'btn btn-block btn-primary mb-1', remote: true %>
+    <%= render @trips %>
+  </ul>
+</div>

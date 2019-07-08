@@ -1,0 +1,9 @@
+<li class="list-group-item d-flex justify-content-between <%= trip_text_color(trip) %>" id="trip-li-<%= trip.id %>">
+  <div>
+    Trip n° <%= trip.id %>
+    <span id="state-<%= trip.id %>">(<%= trip.state %>)</span>
+  </div>
+  <div>
+  <%= display_links(trip) %>
+  </div>
+</li>

@@ -1,0 +1,10 @@
+<% if @trip.errors.any? %>
+  document.getElementById('flash').innerHTML = '<%= j render 'shared/alert' %>';
+<% else %>
+  document.getElementById('flash').innerHTML = '<%= j render 'shared/notice' %>';
+  document.getElementById('<%= "cancel-trip-btn-#{@trip.id}" %>').remove();
+  document.getElementById('<%= "state-#{@trip.id}" %>').innerText = '<%= "(#{@trip.state})" %>';
+  document.getElementById('<%= "trip-li-#{@trip.id}" %>').classList.add('text-danger');
+<% end %>
+
+hideFlash(3000);
