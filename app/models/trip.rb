@@ -3,6 +3,7 @@ class Trip < ApplicationRecord
   validates :code, uniqueness: true, presence: true
 
   before_validation :set_code
+  after_validation :trigger_event_publisher
   before_save :print_state
   before_save :trigger_payment
 
@@ -13,6 +14,14 @@ class Trip < ApplicationRecord
   }
 
   private
+
+  def trigger_event_publisher
+    return unless state_changed? || !persisted?
+
+    rabbit = Rabbit.new
+    rabbit.publish("Trip n° #{id} has been #{state}")
+    rabbit.destroy
+  end
 
   def trigger_payment
     return unless state_changed? || !persisted?
