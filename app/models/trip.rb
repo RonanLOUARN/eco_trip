@@ -3,6 +3,7 @@ class Trip < ApplicationRecord
   validates :code, uniqueness: true, presence: true
 
   before_validation :set_code
+  before_save :print_state
 
   enum state: {
     created: 'created',
@@ -11,6 +12,12 @@ class Trip < ApplicationRecord
   }
 
   private
+
+  def print_state
+    return unless state_changed?
+
+    Rails.logger.info state
+  end
 
   def set_code
     return if persisted?
