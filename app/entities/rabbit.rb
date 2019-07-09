@@ -1,6 +1,6 @@
 class Rabbit
   def initialize
-    @connection = Bunny.new.tap(&:start)
+    @connection = Bunny.new(host: 'rabbitmq', user: 'guest', pass: 'guest').tap(&:start)
     @channel = @connection.create_channel
   end
 
