@@ -2,6 +2,10 @@
   document.getElementById('flash').innerHTML = '<%= j render 'shared/alert' %>';
 <% else %>
   document.getElementById('flash').innerHTML = '<%= j render 'shared/notice' %>';
+  var startInput = document.getElementById('<%= "start-trip-btn-#{@trip.id}" %>');
+  if(startInput){
+      startInput.remove();
+  }
   document.getElementById('<%= "cancel-trip-btn-#{@trip.id}" %>').remove();
   document.getElementById('<%= "state-#{@trip.id}" %>').innerText = '<%= "(#{@trip.state})" %>';
   document.getElementById('<%= "trip-li-#{@trip.id}" %>').classList.add('text-danger');
