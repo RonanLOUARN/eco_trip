@@ -1,21 +1,35 @@
 version: '3'
 services:
-  rabbit-server:
-    image: rabbitmq
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit"
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    labels:
+      NAME: "rabbitmq"
+    volumes:
+      - ./rabbitmq-isolated.conf:/etc/rabbitmq/rabbitmq.config
+    networks:
+      - mynet
   db:
     image: postgres
     volumes:
       - ./tmp/db:/var/lib/postgresql/data
+    networks:
+      - mynet
   web:
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/myapp
+      - .:/eco_trip
     ports:
       - "3000:3000"
     depends_on:
       - db
-    environment:
-      DB_USER: postgres
-      DB_PASSWORD:
-      DB_HOST: db
+      - rabbitmq
+    networks:
+      - mynet
+
+networks:
+  mynet:
